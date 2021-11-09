@@ -33,18 +33,36 @@ Configuration properties
 
 The following configuration properties are available:
 
-============================== ========== ==============================================================================
-Property Name                  Required   Description
-============================== ========== ==============================================================================
-``pinot.controller-urls``      Yes        A comma separated list of controller hosts. If Pinot is deployed via
-                                          `Kubernetes <https://kubernetes.io/>`_ this needs to point to the controller
-                                          service endpoint. The Pinot broker and server must be accessible via DNS as
-                                          Pinot returns hostnames and not IP addresses.
-``pinot.segments-per-split``   No         The number of segments processed in a split. Setting this higher reduces the
-                                          number of requests made to Pinot. This is useful for smaller Pinot clusters.
-``pinot.request-timeout``      No         The timeout for Pinot requests. Increasing this can reduce timeouts if DNS
-                                          resolution is slow.
-============================== ========== ==============================================================================
+========================================================= ========== ==============================================================================
+Property Name                                             Required   Description
+========================================================= ========== ==============================================================================
+``pinot.controller-urls``                                 Yes        A comma separated list of controller hosts. If Pinot is deployed via
+                                                                     `Kubernetes <https://kubernetes.io/>`_ this needs to point to the controller
+                                                                     service endpoint. The Pinot broker and server must be accessible via DNS as
+                                                                     Pinot returns hostnames and not IP addresses.
+``pinot.segments-per-split``                              No         The number of segments processed in a split. Setting this higher reduces the
+                                                                     number of requests made to Pinot. This is useful for smaller Pinot clusters.
+``pinot.request-timeout``                                 No         The timeout for Pinot requests. Increasing this can reduce timeouts if DNS
+                                                                     resolution is slow.
+``pinot.authentication.controller.type``                  No         Pinot authentication method for controller requests. Allowed values are
+                                                                     ``NONE`` and ``BASIC_INLINE`` - defaults to ``NONE`` which is no
+                                                                     authentication.
+``pinot.authentication.controller.basic-inline.user``     No         Controller username for basic authentication method.
+``pinot.authentication.controller.basic-inline.password`` No         Controller password for basic authentication method.
+``pinot.authentication.broker.type``                      No         Pinot authentication method for broker requests. Allowed values are
+                                                                     ``NONE`` and ``BASIC_INLINE`` - defaults to ``NONE`` which is no
+                                                                     authentication.
+``pinot.authentication.broker.basic-inline.user``         No         Broker username for basic authentication method.
+``pinot.authentication.broker.basic-inline.password``     No         Broker password for basic authentication method.
+========================================================= ========== ==============================================================================
+
+If ``pinot.authentication.controller.type`` is set to ``BASIC_INLINE`` then both ``pinot.authentication.controller.basic-inline.user`` and
+``pinot.authentication.controller.basic-inline.password`` are required.
+
+If ``pinot.authentication.broker.type`` is set to ``BASIC_INLINE`` then both ``pinot.authentication.broker.basic-inline.user`` and
+``pinot.authentication.broker.basic-inline.password`` are required.
+
+You can use :doc:`secrets </security/secrets>` to avoid actual values in the catalog properties files.
 
 Querying Pinot tables
 ---------------------
